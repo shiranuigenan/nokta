@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <assert.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 VkInstance vulkanOrnegi = VK_NULL_HANDLE;
 
@@ -20,12 +21,33 @@ int main(int argc, char **argv)
     printf("|--------------------------------------------------|\n");
     for (int i = 0; i < uzantiSayisi; i++)
         printf("|%-38s|%-11d|\n", uzantiOzellikleri[i].extensionName, uzantiOzellikleri[i].specVersion);
-    printf("|--------------------------------------------------|\n");
+    printf("|--------------------------------------------------|\n\n");
+#pragma endregion
+#pragma region DESTEKLENEN TÜM KATMANLARIN LİSTESİNİ YAZDIR
+    uint32_t katmanSayisi = 0;
+    vkEnumerateInstanceLayerProperties(&katmanSayisi, NULL);
+    VkLayerProperties *katmanOzellikleri = malloc(katmanSayisi * sizeof(VkLayerProperties));
+    vkEnumerateInstanceLayerProperties(&katmanSayisi, katmanOzellikleri);
+
+    printf("|----------------------------------------------------------------------------------------------------------|\n");
+    printf("|                                        DESTEKLENEN TÜM KATMANLAR                                         |\n");
+    printf("|----------------------------------------------------------------------------------------------------------|\n");
+    printf("|layerName                        |specVersion|implementationVer|description                               |\n");
+    printf("|----------------------------------------------------------------------------------------------------------|\n");
+    for (int i = 0; i < katmanSayisi; i++)
+        printf("|%-33s|%-11d|%-17d|%-42s|\n", katmanOzellikleri[i].layerName, katmanOzellikleri[i].specVersion, katmanOzellikleri[i].implementationVersion, katmanOzellikleri[i].description);
+    printf("|----------------------------------------------------------------------------------------------------------|\n");
     return 0;
 
 #pragma endregion
 
-    const char *etkinKatmanIsimleri[] = {"VK_LAYER_LUNARG_standard_validation"};
+//doğrulama katmanı açık, eğer debug modda değilse kapatılsın
+bool dogrulamaKatmaniniEtkinlestir = true;
+#ifdef NDEBUG
+dogrulamaKatmaniniEtkinlestir = false;
+#endif
+
+    const char *etkinKatmanIsimleri[] = {"VK_LAYER_KHRONOS_validation"};
     const char *etkinUzantiIsimleri[] = {"VK_EXT_debug_report"};
 
     VkApplicationInfo uygulamaBilgisi = {
