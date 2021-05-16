@@ -1,47 +1,15 @@
 {
     "tasks": [
         {
-            "type": "cppbuild",
+            "type": "shell",
             "label": "build for debug",
-            "command": "/usr/bin/gcc",
+            "command": "make",
             "args": [
-                "-g",
-                "${workspaceFolder}/src/main.c",
-                "-o",
-                "${workspaceFolder}/bin/debug/nokta"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
             }
-        },
-        {
-            "type": "cppbuild",
-            "label": "build for release",
-            "command": "/usr/bin/gcc",
-            "args": [
-                "${workspaceFolder}/src/main.c",
-                "-o",
-                "${workspaceFolder}/bin/release/nokta",
-                "-O3"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        }        
+        }
     ],
     "version": "2.0.0"
 }
